@@ -49,7 +49,7 @@ Works the same way with any LLM that supports custom system prompts:
    - Say *"skip"* or *"suggest a default"* to move on without blocking
    - Revise any earlier answer
    - Ask *"show me what we have so far"* for a live draft with `{{placeholders}}` still visible
-3. **Consistency check.** Before finalizing, the assistant verifies that every user story has an implementing FR, every goal has a success metric, and personas/goals/stories don't contradict each other. Issues are surfaced for you to resolve.
+3. **Consistency check.** Before finalizing, the assistant outputs an explicit `PASS/FAIL` block — one line per user story (mapped to its implementing FR) and one line per goal (mapped to its success metric) — plus a persona/goal/story alignment check. Any `FAIL` is surfaced under **Inconsistencies to resolve** with a proposed fix before the final PRD is rendered.
 4. **Summary + confirmation.** One-line summary per section. You confirm or request edits.
 5. **Final PRD.** Clean Markdown, ready to paste into Notion, GitHub, Confluence, or directly into your AI coding agent.
 
@@ -59,6 +59,8 @@ Works the same way with any LLM that supports custom system prompts:
 - **Helpful when stuck.** Proposes sensible defaults with brief rationale instead of blocking on slots you can't answer cold.
 - **No filler.** Skips pleasantries and recapping. Moves directly to the next question.
 - **Captures specifics verbatim.** Numbers, dates, proper nouns, and exact metric phrasing are preserved.
+- **No fabrication.** If you haven't supplied a specific (number, threshold, named entity, algorithm, schema), the slot is marked `_TBD_` rather than invented — and called out in Review Notes so you know what to pressure-test.
+- **Goal/metric pairing.** Every Business Goal and User Goal is captured *with* its success metric in the same turn — no orphaned goals, no User Goals missing from the metrics table.
 - **Multi-slot detection.** If one of your answers covers several fields, all of them are filled — no re-asking.
 - **Auto-fills.** `Version Number` = `v1`. `Role-Based Access` is inferred from your personas and goals — multi-role when distinct permission tiers exist (admin / editor / viewer, owner / member / guest, etc.), single-role otherwise.
 - **Mid-flow revision.** Change any earlier answer at any time without restarting.
